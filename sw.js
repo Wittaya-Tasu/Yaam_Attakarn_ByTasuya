@@ -1,4 +1,4 @@
-const CACHE = 'yaam-attakarn-v1.0.0';
+const CACHE = 'yaam-attakarn-v2.0.0';
 const ASSETS = [
   './', './index.html', './css/style.css', './js/data.js', './js/app.js',
   './manifest.json', './assets/icons/icon-192.png', './assets/icons/icon-512.png'
