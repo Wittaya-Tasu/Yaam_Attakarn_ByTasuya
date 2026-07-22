@@ -238,7 +238,9 @@
     els.categoryTitle.textContent = categoryLabels[selectedCategory];
     els.timeline.classList.add('fading');
     setTimeout(() => {
-      render({ shouldScroll: true });
+      render({ shouldScroll: false });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateFloatingNav();
       els.timeline.classList.remove('fading');
     }, 200);
   });
@@ -253,15 +255,32 @@
     if (liveMode) { selectedDate = new Date(); updateInputs(); render({ shouldScroll: true }); }
   });
 
+  function scrollToCurrentCard() {
+    const card = lastCurrentCardId ? document.getElementById(`card-${lastCurrentCardId}`) : null;
+    card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function updateFloatingNav() {
+    const nearTop = window.scrollY < 420;
+    const showDown = hasChosenCategory && nearTop;
+    const showUp = !nearTop;
+
+    els.backToTopBtn.classList.toggle('visible', showDown || showUp);
+    els.backToTopBtn.classList.toggle('direction-down', showDown);
+    els.backToTopBtn.dataset.direction = showDown ? 'down' : 'up';
+
+    const label = showDown ? 'ไปยังยามปัจจุบัน' : 'กลับขึ้นบนสุด';
+    els.backToTopBtn.setAttribute('aria-label', label);
+    els.backToTopBtn.title = label;
+  }
+
   els.backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (els.backToTopBtn.dataset.direction === 'down') scrollToCurrentCard();
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  const updateBackToTopVisibility = () => {
-    els.backToTopBtn.classList.toggle('visible', window.scrollY > 520);
-  };
-  window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
-  updateBackToTopVisibility();
+  window.addEventListener('scroll', updateFloatingNav, { passive: true });
+  updateFloatingNav();
 
   const savedTheme = localStorage.getItem('yaam-theme');
   if (savedTheme) document.documentElement.dataset.theme = savedTheme;
