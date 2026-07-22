@@ -278,3 +278,8 @@ input[type="date"], input[type="time"] {
 @media (min-width: 760px) {
   .back-to-top { right: calc((100vw - 620px) / 2 - 64px); }
 }
+
+
+/* V4: floating navigation switches between current yarm and page top */
+.back-to-top.direction-down svg { transform: rotate(180deg); }
+.back-to-top svg { transition: transform .2s ease; }
