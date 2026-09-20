@@ -11,6 +11,17 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="kala-tab.css" />
+  <style>
+    [hidden]{display:none!important}
+    .app-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:-4px 0 16px;padding:4px;border:1px solid var(--line);border-radius:18px;background:var(--surface);backdrop-filter:blur(20px);position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:40}
+    .app-tab-button{min-height:46px;border:0;border-radius:14px;background:transparent;color:var(--muted);font-weight:720;font-size:14px}
+    .app-tab-button.active{background:var(--surface-solid);color:var(--text);box-shadow:0 3px 14px rgba(0,0,0,.08)}
+    .app-tab-panel{min-width:0}.app.kala-active{width:min(100%,1180px)}
+    .app.kala-active .topbar,.app.kala-active .app-tabs{width:min(100%,560px);margin-left:auto;margin-right:auto}
+    @media(max-width:600px){.app.kala-active{width:100%}.app.kala-active .topbar,.app.kala-active .app-tabs{width:100%}}
+    @media(max-width:440px){.app-tabs{border-radius:16px;margin-bottom:12px}.app-tab-button{min-height:46px;font-size:13px}}
+  </style>
 </head>
 <body>
   <div id="splash" class="splash" aria-hidden="true">
@@ -29,6 +40,12 @@
       </button>
     </header>
 
+    <nav class="app-tabs" role="tablist" aria-label="โหมดการทำงาน">
+      <button id="yamTabBtn" class="app-tab-button active" type="button" role="tab" aria-selected="true" aria-controls="yamTabPanel">ยามอัฐกาล</button>
+      <button id="kalaTabBtn" class="app-tab-button" type="button" role="tab" aria-selected="false" aria-controls="kalaTabPanel">กาลชะตา</button>
+    </nav>
+
+    <section id="yamTabPanel" class="app-tab-panel" role="tabpanel" aria-labelledby="yamTabBtn">
     <section class="now-card" aria-live="polite">
       <div class="now-topline">
         <div>
@@ -127,6 +144,11 @@
     <footer>
       <p>อ้างอิงหลักการจากตำรายามอัฐกาล • วันยามใหม่เริ่มเวลา 06:01 น.</p>
     </footer>
+    </section>
+
+    <section id="kalaTabPanel" class="app-tab-panel" role="tabpanel" aria-labelledby="kalaTabBtn" hidden>
+      <div id="kala-root"></div>
+    </section>
   </main>
 
   <button id="backToTopBtn" class="back-to-top" type="button" aria-label="ไปยังยามปัจจุบัน" title="ไปยังยามปัจจุบัน">
@@ -146,5 +168,6 @@
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+  <script type="module" src="js/tab-controller.js"></script>
 </body>
 </html>
